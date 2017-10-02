@@ -1,6 +1,7 @@
 require 'oystercard'
 
 describe Oystercard do
+  let(:seven_sisters) { double(:station, :name => "Seven Sisters") }
   context "when brand new" do
     describe "#balance" do
       it 'is zero' do
@@ -43,14 +44,20 @@ describe Oystercard do
     describe "#touch_in" do
       context "when balance too low" do
         it "refuses to touch in" do
-          expect { subject.touch_in }.to raise_error "Must have at least £#{min_fare} on card to travel"
+          expect { subject.touch_in seven_sisters }.to raise_error "Must have at least £#{min_fare} on card to travel"
         end
       end
       context "when enough money on card" do
         it "registers that the card is 'in_journey'" do
           subject.top_up 30
-          subject.touch_in
+          subject.touch_in seven_sisters
           expect(subject.in_journey?).to eq true
+        end
+
+        it "registers station at start of journey" do
+          subject.top_up 30
+          subject.touch_in seven_sisters
+          expect(subject.journey_start).to eq seven_sisters
         end
       end
     end
@@ -58,7 +65,7 @@ describe Oystercard do
     describe "#touch_out" do
       it "registers that the journey has ended" do
         subject.top_up 30
-        subject.touch_in
+        subject.touch_in seven_sisters
         subject.touch_out
         expect(subject.in_journey?).to eq false
       end
