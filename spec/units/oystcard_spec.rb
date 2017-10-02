@@ -36,6 +36,7 @@ describe Oystercard do
   end
 
   context "when travelling" do
+    min_balance = Oystercard::MIN_BALANCE
 
     describe "#deduct" do
       it "reduces the balance by the correct amount" do
@@ -51,14 +52,23 @@ describe Oystercard do
     end
 
     describe "#touch_in" do
-      it "registers that the card is 'in_journey'" do
-        subject.touch_in
-        expect(subject.in_journey?).to eq true
+      context "when balance too low" do
+        it "refuses to touch in" do
+          expect { subject.touch_in }.to raise_error "Must have at least £#{min_balance} on card to travel"
+        end
+      end
+      context "when enough money on card" do
+        it "registers that the card is 'in_journey'" do
+          subject.top_up 30
+          subject.touch_in
+          expect(subject.in_journey?).to eq true
+        end
       end
     end
 
     describe "#touch_out" do
       it "registers that the journey has ended" do
+        subject.top_up 30
         subject.touch_in
         subject.touch_out
         expect(subject.in_journey?).to eq false
