@@ -57,7 +57,7 @@ describe Oystercard do
         it "registers station at start of journey" do
           subject.top_up 30
           subject.touch_in seven_sisters
-          expect(subject.journey_start).to eq seven_sisters
+          expect(subject.entry_station).to eq seven_sisters
         end
       end
     end
@@ -68,6 +68,13 @@ describe Oystercard do
         subject.touch_in seven_sisters
         subject.touch_out
         expect(subject.in_journey?).to eq false
+      end
+
+      it "removes reference to entry_station on card" do
+        subject.top_up 30
+        subject.touch_in seven_sisters
+        subject.touch_out
+        expect(subject.entry_station.nil?).to eq true
       end
 
       it "reduces the balance by the minimum fare" do
