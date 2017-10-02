@@ -21,7 +21,7 @@ class Oystercard
   end
 
   def touch_out
-    self.deduct MIN_FARE
+    deduct MIN_FARE
     @in_journey = false
   end
 
@@ -33,5 +33,5 @@ class Oystercard
   def deduct fare
     @balance -= fare
   end
-  
+
 end

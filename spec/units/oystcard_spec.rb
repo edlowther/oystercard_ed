@@ -36,15 +36,6 @@ describe Oystercard do
   context "when travelling" do
     min_fare = Oystercard::MIN_FARE
 
-    describe "#deduct" do
-      it "reduces the balance by the correct amount" do
-        fare = 2.8
-        subject.top_up 20
-        subject.deduct fare
-        expect(subject.balance).to eq 20 - fare
-      end
-    end
-
     describe "#in_journey?" do
       it { is_expected.to respond_to :in_journey? }
     end
