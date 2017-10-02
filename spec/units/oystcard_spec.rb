@@ -30,6 +30,11 @@ describe Oystercard do
         expect { subject.top_up( max_value + 0.01) }.to raise_error expected_error_msg
       end
 
+      it "does not work with negative amounts" do
+        expected_error_msg = 'Cannot top-up with negative amount'
+        expect { subject.top_up -1 }.to raise_error expected_error_msg
+      end
+
     end
   end
 end
