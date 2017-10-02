@@ -13,9 +13,7 @@ describe Oystercard do
       max_value = Oystercard::MAX_VALUE
 
       it 'increases the balance by the correct amount' do
-        current_balance = subject.balance
-        subject.top_up 20
-        expect(subject.balance).to eq current_balance + 20
+        expect { subject.top_up 20 }.to change { subject.balance }.by 20
       end
 
       it "works for balances up to £#{max_value}" do
@@ -36,7 +34,7 @@ describe Oystercard do
   end
 
   context "when travelling" do
-    min_balance = Oystercard::MIN_BALANCE
+    min_fare = Oystercard::MIN_FARE
 
     describe "#deduct" do
       it "reduces the balance by the correct amount" do
@@ -54,7 +52,7 @@ describe Oystercard do
     describe "#touch_in" do
       context "when balance too low" do
         it "refuses to touch in" do
-          expect { subject.touch_in }.to raise_error "Must have at least £#{min_balance} on card to travel"
+          expect { subject.touch_in }.to raise_error "Must have at least £#{min_fare} on card to travel"
         end
       end
       context "when enough money on card" do
