@@ -17,18 +17,16 @@ class Oystercard
 
   def touch_in station
     raise "Must have at least £#{MIN_FARE} on card to travel" if @balance < MIN_FARE
-    @in_journey = true
     @entry_station = station
   end
 
   def touch_out
     deduct MIN_FARE
-    @in_journey = false
     @entry_station = nil
   end
 
   def in_journey?
-    @entry_station
+    @entry_station ? true : false
   end
 
   private
