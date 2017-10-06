@@ -7,7 +7,7 @@ describe Oystercard do
   min_fare = Oystercard::MIN_FARE
   context "when brand new" do
     it 'has no journey history' do
-      expect(subject.history).to eq []
+      expect(subject.journeylog.journeys).to eq []
     end
     describe "#balance" do
       it 'is zero' do
@@ -44,15 +44,15 @@ describe Oystercard do
     describe "#touch_in" do
       it "initializes a journey and stores in current_journey instance variable" do
         subject.touch_in vauxhall
-        expect(subject.current_journey).to be_a Journey
+        expect(subject.journeylog.current_journey).to be_a Journey
       end
       it "the current_journey is marked as incomplete" do
         subject.touch_in vauxhall
-        expect(subject.current_journey).to_not be_complete
+        expect(subject.journeylog.current_journey).to_not be_complete
       end
       it "saves a journey to the journey history array" do
         subject.touch_in vauxhall
-        expect(subject.history[0]).to be_a Journey
+        expect(subject.journeylog.journeys[0]).to be_a Journey
       end
       it 'reduces the balance by £6 if the previous journey was incomplete' do
         subject.touch_in vauxhall
@@ -65,11 +65,11 @@ describe Oystercard do
       before(:each) { subject.touch_in vauxhall }
       it "registers that the journey is complete" do
         subject.touch_out pimlico
-        expect(subject.history[-1]).to be_complete
+        expect(subject.journeylog.journeys[-1]).to be_complete
       end
       it "empties current_journey variable if journey is complete" do
         subject.touch_out pimlico
-        expect(subject.current_journey).to be_nil
+        expect(subject.journeylog.current_journey).to be_nil
       end
       it "reduces the balance by the minimum fare" do
         expect { subject.touch_out pimlico }.to change { subject.balance }.by -1
