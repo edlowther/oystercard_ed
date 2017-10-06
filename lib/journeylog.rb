@@ -1,7 +1,7 @@
 require_relative 'journey'
 
 class JourneyLog
-  attr_reader :current_journey, :journeys
+  attr_reader :current_journey
 
   def initialize journey_class = Journey
     @journey_class = journey_class
@@ -19,5 +19,9 @@ class JourneyLog
     @current_journey.finish station
     @journeys << @current_journey if !@journeys.include? @current_journey
     @current_journey = nil
+  end
+
+  def journeys
+    @journeys.dup
   end
 end
