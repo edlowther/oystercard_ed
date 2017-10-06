@@ -26,11 +26,11 @@ class Oystercard
 
   def touch_out station
     @journeylog.finish station
-    deduct @journeylog.journeys[-1].fare
+    deduct @journeylog.journeys.last.fare
   end
 
   private
-  
+
   def deduct fare
     @balance -= fare
   end

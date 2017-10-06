@@ -14,7 +14,7 @@ class Journey
   end
 
   def fare
-    complete? ? 1 : 6
+    complete? ? 1 + (exit_station.zone - entry_station.zone).abs : 6
   end
 
   def complete?

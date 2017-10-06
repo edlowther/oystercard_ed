@@ -3,11 +3,8 @@ require 'journeylog'
 describe JourneyLog do
   let(:card) { double(:card, :deduct => true) }
   subject(:journeylog) {described_class.new }
-  let(:brixton) { double(:station, :name => "Brixton") }
-  let(:pimlico) { double(:station, :name => "Pimlico") }
-  it 'is initialized with a journey_class instance variable that defaults to Journey' do
-    expect(journeylog.journey_class).to eq Journey
-  end
+  let(:brixton) { double(:station, :name => "Brixton", :zone => 2) }
+  let(:pimlico) { double(:station, :name => "Pimlico", :zone => 1) }
   it 'is initialized with an empty array to store journeys in' do
     expect(journeylog.journeys).to eq []
   end
